@@ -25,7 +25,10 @@ class ModelTests(TestCase):
         email = 'test@EXAMPLE.COM'
         # added a random string as a password
         # since the password has been alreay tested.
-        user = get_user_model().objects.create_user(email, 'testpassword')
+        user = get_user_model().objects.create_user(
+            email=email,
+            password='testpassword'
+        )
         self.assertEqual(user.email, email.lower())
 
     def test_new_user_email_invalid(self):
@@ -33,15 +36,18 @@ class ModelTests(TestCase):
         Test creating user with no email raises Error.
         """
         with self.assertRaises(ValueError):
-            get_user_model().objects.create_user(None, 'testpassword')
+            get_user_model().objects.create_user(
+                email=None,
+                password='testpassword'
+            )
 
     def test_create_new_superuser(self):
         """
         Test creating a new superuser.
         """
         user = get_user_model().objects.create_superuser(
-            'admin@example.com',
-            'testpassword'
+            email='admin@example.com',
+            password='testpassword'
         )
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
